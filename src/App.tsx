@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Container from "@mui/material/Container";
+import getCities from "./data/getCities";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [cities, setCities] = useState(null);
+  const [citiesError, setCitiesError] = useState("");
+
+  useEffect(() => {
+    getCities().then((data) => {
+      console.log({ data });
+      if (data && data.response) {
+        setCities(data.response);
+      } else if (data && data.errorMessage) {
+        setCitiesError(data.errorMessage);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log({ cities, citiesError });
+  }, [cities]);
+
+  return <Container maxWidth="sm">Merhaba Yasin!</Container>;
 }
 
 export default App;
